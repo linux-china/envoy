@@ -20,7 +20,7 @@ namespace Envoy {
                     Network::FilterFactoryCb createFilterFactory(const Json::Object &,
                                                                  Server::Configuration::FactoryContext &) override {
                         return [](Network::FilterManager &filter_manager) -> void {
-                            auto filter = std::make_shared<RSocketFilter>();
+                            auto filter = RSocketFilterSharedPtr();
                             filter_manager.addReadFilter(filter);
                             filter_manager.addWriteFilter(filter);
                         };
@@ -30,7 +30,7 @@ namespace Envoy {
                     createFilterFactoryFromProto(const Protobuf::Message &,
                                                  Server::Configuration::FactoryContext &) override {
                         return [](Network::FilterManager &filter_manager) -> void {
-                            auto filter = std::make_shared<RSocketFilter>();
+                            auto filter = RSocketFilterSharedPtr();
                             filter_manager.addReadFilter(filter);
                             filter_manager.addWriteFilter(filter);
                         };
