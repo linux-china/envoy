@@ -72,6 +72,7 @@ EXTENSIONS = {
     "envoy.filters.network.tcp_proxy":                  "//source/extensions/filters/network/tcp_proxy:config",
     "envoy.filters.network.thrift_proxy":               "//source/extensions/filters/network/thrift_proxy:config",
     "envoy.filters.network.sni_cluster":                "//source/extensions/filters/network/sni_cluster:config",
+    "envoy.filters.network.rsocket_proxy":              "//source/extensions/filters/network/rsocket_proxy:config",
 
     #
     # Resource monitors
