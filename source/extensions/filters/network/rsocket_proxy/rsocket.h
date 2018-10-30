@@ -28,6 +28,8 @@ namespace Envoy {
                 private:
                     Network::ReadFilterCallbacks *read_callbacks_{};
                 };
+                typedef std::shared_ptr<RSocketFilter> RSocketFilterSharedPtr;
+
             } // namespace Tap
         } // namespace NetworkFilters
     } // namespace Extensions
