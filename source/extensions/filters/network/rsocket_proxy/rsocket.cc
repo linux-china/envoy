@@ -20,6 +20,7 @@ namespace Envoy {
                     ENVOY_CONN_LOG(trace, "tap: got {} bytes", read_callbacks_->connection(), data.length());
                     //data: header + body
                     std::cout << "Received bytes from requester: " << data.length() << std::endl;
+                    this->stats_.msg_request_counter_.inc();
                     // inject cluster name for next filter
                     return Network::FilterStatus::Continue;
                 }
