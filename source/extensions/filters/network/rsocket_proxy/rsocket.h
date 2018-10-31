@@ -23,12 +23,12 @@ namespace Envoy {
 
                     void initializeReadFilterCallbacks(Network::ReadFilterCallbacks &callbacks) override {
                         read_callbacks_ = &callbacks;
+                        ENVOY_LOG(info, "read filter callback");
                     }
 
                 private:
                     Network::ReadFilterCallbacks *read_callbacks_{};
                 };
-                typedef std::shared_ptr<RSocketFilter> RSocketFilterSharedPtr;
 
             } // namespace Tap
         } // namespace NetworkFilters
