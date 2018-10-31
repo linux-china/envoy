@@ -21,9 +21,9 @@ namespace Envoy {
                                                                  Server::Configuration::FactoryContext &factoryContext) override {
                         //todo factory context to add config for filter
                         Stats::Scope &scope_ = factoryContext.scope();
-                        scope_.counter("demo").inc();
-                        return [](Network::FilterManager &filter_manager) -> void {
-                            filter_manager.addFilter(std::make_shared<RSocketFilter>());
+                        const std::string &prefix = this->stat_prefix;
+                        return [&](Network::FilterManager &filter_manager) -> void {
+                            filter_manager.addFilter(std::make_shared<RSocketFilter>(prefix, scope_));
                         };
                     }
 
@@ -32,9 +32,9 @@ namespace Envoy {
                                                  Server::Configuration::FactoryContext &factoryContext) override {
                         //todo factory context to add config for filter
                         Stats::Scope &scope_ = factoryContext.scope();
-                        scope_.counter("demo").inc();
-                        return [](Network::FilterManager &filter_manager) -> void {
-                            filter_manager.addFilter(std::make_shared<RSocketFilter>());
+                        const std::string &prefix = this->stat_prefix;
+                        return [&](Network::FilterManager &filter_manager) -> void {
+                            filter_manager.addFilter(std::make_shared<RSocketFilter>(prefix, scope_));
                         };
                     }
 
@@ -44,6 +44,7 @@ namespace Envoy {
 
                     std::string name() override { return NetworkFilterNames::get().RSocket; }
 
+                    const std::string stat_prefix = "rsocket.";
                 };
 
                 /**
