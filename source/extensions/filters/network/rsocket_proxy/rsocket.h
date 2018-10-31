@@ -4,16 +4,38 @@
 
 #include "common/common/logger.h"
 
+#include "envoy/stats/scope.h"
+
 namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
             namespace RSocket {
 
                 /**
+                 * All rsocket stats. @see stats_macros.h
+                 */
+                // clang-format off
+#define ALL_RSOCKET_STATS(COUNTER, GAUGE)  \
+                  COUNTER(msg_request_counter) \
+                  COUNTER(msg_response_counter) \
+                  GAUGE  (msg_request_qps)
+                // clang-format on
+
+                /**
+                 * Struct definition for all rsocket stats. @see stats_macros.h
+                 */
+                struct RSocketStats {
+                    ALL_RSOCKET_STATS(GENERATE_COUNTER_STRUCT, GENERATE_GAUGE_STRUCT)
+                };
+
+                /**
                  * Implementation of a rsocket filter
                  */
                 class RSocketFilter : public Network::Filter, Logger::Loggable<Logger::Id::filter> {
                 public:
+                    RSocketFilter(const std::string &stat_prefix, Stats::Scope &scope) : stats_(
+                            generateStats(stat_prefix, scope)) {}
+
                     // Network::ReadFilter
                     Network::FilterStatus onData(Buffer::Instance &data, bool end_stream) override;
 
@@ -28,6 +50,12 @@ namespace Envoy {
 
                 private:
                     Network::ReadFilterCallbacks *read_callbacks_{};
+                    RSocketStats stats_;
+
+                    RSocketStats generateStats(const std::string &prefix, Stats::Scope &scope) {
+                        return RSocketStats{ALL_RSOCKET_STATS(POOL_COUNTER_PREFIX(scope, prefix),
+                                                              POOL_GAUGE_PREFIX(scope, prefix))};
+                    }
                 };
 
             } // namespace Tap
