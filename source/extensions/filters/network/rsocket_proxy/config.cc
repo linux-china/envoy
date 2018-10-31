@@ -18,7 +18,10 @@ namespace Envoy {
                 public:
                     // NamedNetworkFilterConfigFactory
                     Network::FilterFactoryCb createFilterFactory(const Json::Object &,
-                                                                 Server::Configuration::FactoryContext &) override {
+                                                                 Server::Configuration::FactoryContext &factoryContext) override {
+                        //todo factory context to add config for filter
+                        Stats::Scope &scope_ = factoryContext.scope();
+                        scope_.counter("demo").inc();
                         return [](Network::FilterManager &filter_manager) -> void {
                             filter_manager.addFilter(std::make_shared<RSocketFilter>());
                         };
@@ -26,7 +29,10 @@ namespace Envoy {
 
                     Network::FilterFactoryCb
                     createFilterFactoryFromProto(const Protobuf::Message &,
-                                                 Server::Configuration::FactoryContext &) override {
+                                                 Server::Configuration::FactoryContext &factoryContext) override {
+                        //todo factory context to add config for filter
+                        Stats::Scope &scope_ = factoryContext.scope();
+                        scope_.counter("demo").inc();
                         return [](Network::FilterManager &filter_manager) -> void {
                             filter_manager.addFilter(std::make_shared<RSocketFilter>());
                         };
