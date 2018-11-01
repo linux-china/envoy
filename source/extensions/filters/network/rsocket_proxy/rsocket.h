@@ -15,17 +15,17 @@ namespace Envoy {
                  * All rsocket stats. @see stats_macros.h
                  */
                 // clang-format off
-#define ALL_RSOCKET_STATS(COUNTER, GAUGE)  \
+#define ALL_RSOCKET_STATS(COUNTER, GAUGE, HISTOGRAM)  \
                   COUNTER(msg_request_counter) \
-                  COUNTER(msg_response_counter) \
-                  GAUGE  (msg_request_qps)
+                  GAUGE(rsocket_upstream_connections) \
+                  HISTOGRAM  (msg_request_qps)
                 // clang-format on
 
                 /**
                  * Struct definition for all rsocket stats. @see stats_macros.h
                  */
                 struct RSocketStats {
-                    ALL_RSOCKET_STATS(GENERATE_COUNTER_STRUCT, GENERATE_GAUGE_STRUCT)
+                    ALL_RSOCKET_STATS(GENERATE_COUNTER_STRUCT, GENERATE_GAUGE_STRUCT, GENERATE_HISTOGRAM_STRUCT)
                 };
 
                 /**
@@ -54,7 +54,9 @@ namespace Envoy {
 
                     RSocketStats generateStats(const std::string &prefix, Stats::Scope &scope) {
                         return RSocketStats{ALL_RSOCKET_STATS(POOL_COUNTER_PREFIX(scope, prefix),
-                                                              POOL_GAUGE_PREFIX(scope, prefix))};
+                                                              POOL_GAUGE_PREFIX(scope, prefix),
+                                                              POOL_HISTOGRAM_PREFIX(scope, prefix)
+                                            )};
                     }
                 };
 
