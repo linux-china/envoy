@@ -54,6 +54,8 @@ namespace Envoy {
                         ENVOY_LOG(info, "read filter callback");
                     }
 
+                    bool isRSocketData(Buffer::Instance &data);
+
                 private:
                     Network::ReadFilterCallbacks *read_callbacks_{};
                     RSocketStats stats_;
