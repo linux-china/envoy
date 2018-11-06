@@ -16,8 +16,8 @@ namespace Envoy {
                  */
                 // clang-format off
 #define ALL_RSOCKET_STATS(COUNTER, GAUGE, HISTOGRAM)  \
-                  COUNTER(msg_request_counter) \
-                  GAUGE(rsocket_upstream_connection_count) \
+                  COUNTER    (request_counter) \
+                  GAUGE      (upstream_connection_count) \
                   HISTOGRAM  (frame_0x04_request_qps) \
                   HISTOGRAM  (frame_0x04_response_qps) \
                   HISTOGRAM  (frame_0x06_request_qps) \
