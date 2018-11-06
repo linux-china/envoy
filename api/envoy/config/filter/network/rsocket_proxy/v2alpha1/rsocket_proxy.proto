@@ -20,7 +20,7 @@ message RSocketProxy {
         bytes = 4; //binary array
     }
 
-    PayloadMetadataType metadata_type = 0 [(validate.rules).enum.defined_only = true];
+    PayloadMetadataType metadata_type = 2 [(validate.rules).enum.defined_only = true];
 }
 
 /*
