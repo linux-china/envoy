@@ -21,17 +21,19 @@ envoy_cc_library(
         "//include/envoy/network:filter_interface",
         "//source/common/common:assert_lib",
         "//source/common/common:minimal_logger_lib",
+        "@envoy_api//envoy/config/filter/network/rsocket_proxy/v2alpha1:rsocket_proxy_cc",
     ],
 )
 
 envoy_cc_library(
     name = "config",
     srcs = ["config.cc"],
+    hdrs = ["config.h"],
     deps = [
         ":rsocket",
         "//include/envoy/registry",
-        "//include/envoy/server:filter_config_interface",
         "//source/extensions/filters/network:well_known_names",
         "//source/extensions/filters/network/common:factory_base_lib",
+        "@envoy_api//envoy/config/filter/network/rsocket_proxy/v2alpha1:rsocket_proxy_cc",
     ],
 )
