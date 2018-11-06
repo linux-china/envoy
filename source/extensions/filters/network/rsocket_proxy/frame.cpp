@@ -56,12 +56,18 @@ namespace Envoy {
                 }
 
                 std::string Frame::getMetadataUtf8() {
+                    if (metadata_len == 0) {
+                        return "";
+                    }
                     auto metadata = std::make_unique<char[]>(metadata_len);
                     copyMetadataOut(metadata.get());
                     return std::string(metadata.get());
                 }
 
                 std::string Frame::getDataUtf8() {
+                    if (data_len == 0) {
+                        return "";
+                    }
                     auto data = std::make_unique<char[]>(data_len);
                     copyDataOut(data.get());
                     return std::string(data.get());
