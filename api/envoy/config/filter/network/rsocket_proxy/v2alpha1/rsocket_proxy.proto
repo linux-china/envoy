@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package envoy.extensions.filters.network.rsocket_proxy.v2alpha1;
+option go_package = "v2";
+
+import "validate/validate.proto";
+
+// [#protodoc-title: Extensions RSocket Proxy]
+// RSocket Proxy filter configuration.
+message RSocketProxy {
+    // The human readable prefix to use when emitting statistics.
+    string stat_prefix = 1 [(validate.rules).string.min_bytes = 1];
+
+    // Configure the protocol used.
+    enum ProtocolType {
+        protobuf = 0; // protobuf for server2server
+        json = 1; // json for browser2server
+    }
+
+    ProtocolType protocol_type = 2 [(validate.rules).enum.defined_only = true];
+}
+
+/*
+ * RSocket Payload Metadata
+*/
+message PayloadMetadata {
+    //data encoding
+    Encoding encoding = 1;
+    string service = 2;
+    string method = 3;
+    string version = 4;
+    //set endpoint directly
+    string endpoint = 5;
+    //region, such as data center, sub domain system
+    string region = 6;
+    uint32 flag = 9;
+    string traceId = 10;
+    string authorization = 11;
+    map<string, string> attributes = 12;
+
+    enum Encoding {
+        VOID = 0;
+        BYTE = 1;
+        CHAR = 2;
+        SHORT = 3;
+        INT = 4;
+        LONG = 5;
+        FLOAT = 6;
+        DOUBLE = 7;
+        BOOL = 8;
+        STRING = 9;
+        DATETIME = 10;
+        BYTES = 11;
+        CHARS = 12;
+        INTS = 14;
+        LONGS = 15;
+        DOUBLES = 17;
+        STRINGS = 19;
+        PROTO = 31;
+        JSON = 32;
+        HESSIAN = 33;
+        KRYO = 34;
+        THRIFT = 35;
+        AVRO = 36;
+        MSGPACK = 37;
+        CBOR = 38;
+    }
+}
