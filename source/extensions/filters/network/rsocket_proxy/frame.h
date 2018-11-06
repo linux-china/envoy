@@ -13,7 +13,7 @@ namespace Envoy {
             namespace RSocket {
                 class Frame : public Payload {
                 public:
-                    Frame(Buffer::Instance &data);
+                    Frame(Buffer::Instance &data, const std::string metadata_type);
 
                     bool isMetadataPresent() { return this->metadata_present; }
 
@@ -39,6 +39,7 @@ namespace Envoy {
 
                 private:
                     Buffer::Instance &buffer_data;
+                    std::string metadata_type;
                     int frame_len;
                     int stream_id;
                     byte frame_type;

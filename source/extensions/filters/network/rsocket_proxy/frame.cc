@@ -5,7 +5,8 @@ namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
             namespace RSocket {
-                Frame::Frame(Buffer::Instance &data) : buffer_data(data) {
+                Frame::Frame(Buffer::Instance &data, const std::string metadata_type) :
+                        buffer_data(data), metadata_type(metadata_type) {
                     int raw_data_len = data.length();
                     // frame length, first 3 bytes
                     byte frame_len_array[3];
