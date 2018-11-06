@@ -23,9 +23,14 @@ namespace Envoy {
 
                     int getStreamId() { return this->stream_id; }
 
+                    void copyMetadataOut(void *data);
+
+                    void copyDataOut(void *data);
+
                     byte getFrameType() { return this->frame_type; }
 
                 private:
+                    Buffer::Instance &buffer_data;
                     int frame_len;
                     int stream_id;
                     byte frame_type;
