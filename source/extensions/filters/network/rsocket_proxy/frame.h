@@ -1,6 +1,8 @@
 #pragma once
 
 #include "envoy/buffer/buffer.h"
+#include "extensions/filters/network/rsocket_proxy/payload.h"
+
 #include <iostream>
 
 typedef unsigned char byte;
@@ -9,7 +11,7 @@ namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
             namespace RSocket {
-                class Frame {
+                class Frame : public Payload {
                 public:
                     Frame(Buffer::Instance &data);
 
@@ -23,9 +25,15 @@ namespace Envoy {
 
                     int getStreamId() { return this->stream_id; }
 
+                    bool hasMetadata() { return this->metadata_present; }
+
                     void copyMetadataOut(void *data);
 
                     void copyDataOut(void *data);
+
+                    std::string getMetadataUtf8();
+
+                    std::string getDataUtf8();
 
                     byte getFrameType() { return this->frame_type; }
 
