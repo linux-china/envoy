@@ -31,7 +31,7 @@ namespace Envoy {
                                         | static_cast<int>( frame_len_array[2]);
                         // legal rsocket data
                         if (frame_len + 3 == data_len) {
-                            Frame frame{data};
+                            Frame frame{data, this->metadata_type};
                             std::cout << "StreamId:" << frame.getStreamId() << std::endl;
                             std::cout << "FrameLength:" << frame.getFrameLength() << std::endl;
                             std::cout << "MetadataPresent:" << frame.isMetadataPresent() << std::endl;
