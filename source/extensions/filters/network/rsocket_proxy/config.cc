@@ -18,7 +18,7 @@ namespace Envoy {
             namespace RSocket {
 
                 Network::FilterFactoryCb RSocketConfigFactory::createFilterFactoryFromProtoTyped(
-                        const envoy::extensions::filters::network::rsocket_proxy::v2alpha1::RSocketProxy &proto_config,
+                        const RSocketProxy &proto_config,
                         Server::Configuration::FactoryContext &context) {
 
                     const std::string stat_prefix = fmt::format("rsocket.{}.", proto_config.stat_prefix());

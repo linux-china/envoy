@@ -12,6 +12,8 @@
 #include "envoy/server/filter_config.h"
 #include "extensions/filters/network/common/factory_base.h"
 
+using envoy::extensions::filters::network::rsocket_proxy::v2alpha1::RSocketProxy;
+
 namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
@@ -21,13 +23,13 @@ namespace Envoy {
                  * Config registration for the redis proxy filter. @see NamedNetworkFilterConfigFactory.
                  */
                 class RSocketConfigFactory
-                        : public Common::FactoryBase<envoy::extensions::filters::network::rsocket_proxy::v2alpha1::RSocketProxy> {
+                        : public Common::FactoryBase<RSocketProxy> {
                 public:
                     RSocketConfigFactory() : FactoryBase(NetworkFilterNames::get().RSocket) {}
 
                 private:
                     Network::FilterFactoryCb createFilterFactoryFromProtoTyped(
-                            const envoy::extensions::filters::network::rsocket_proxy::v2alpha1::RSocketProxy &proto_config,
+                            const RSocketProxy &proto_config,
                             Server::Configuration::FactoryContext &context) override;
                 };
 
