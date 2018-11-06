@@ -42,7 +42,7 @@ namespace Envoy {
                                 std::cout << "Data Length: " << frame.getDataLength() << std::endl;
                                 std::cout << "Data: " << frame.getDataUtf8() << std::endl;
                             }
-
+                            this->stats_.request_counter_.inc();
                         }
                     }
                     // inject cluster name for next filter
