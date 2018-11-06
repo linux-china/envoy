@@ -5,7 +5,7 @@ namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
             namespace RSocket {
-                Frame::Frame(Buffer::Instance &data): buffer_data(data) {
+                Frame::Frame(Buffer::Instance &data) : buffer_data(data) {
                     int raw_data_len = data.length();
                     // frame length, first 3 bytes
                     byte frame_len_array[3];
@@ -40,9 +40,12 @@ namespace Envoy {
                             this->metadata_len = (static_cast<int>( metadata_len_array[0]) << 16)
                                                  | (static_cast<int>( metadata_len_array[1]) << 8)
                                                  | (static_cast<int>( metadata_len_array[2]));
+                            std::cout << "Metadata Offset: " << metadata_offset << std::endl;
                             std::cout << "Metadata Length: " << metadata_len << std::endl;
-                            this->data_offset = 15;
-                            this->data_len = raw_data_len - this->metadata_len;
+                            this->data_offset = metadata_offset + metadata_len;
+                            this->data_len = raw_data_len - this->data_offset;
+                            std::cout << "Data offset: " << this->data_offset << std::endl;
+                            std::cout << "Data length: " << this->data_len << std::endl;
                         }
 
                     }
@@ -52,7 +55,20 @@ namespace Envoy {
                     this->buffer_data.copyOut(this->metadata_offset, metadata_len, data);
                 }
 
+                std::string Frame::getMetadataUtf8() {
+                    auto metadata = std::make_unique<char[]>(metadata_len);
+                    copyMetadataOut(metadata.get());
+                    return std::string(metadata.get());
+                }
+
+                std::string Frame::getDataUtf8() {
+                    auto data = std::make_unique<char[]>(data_len);
+                    copyDataOut(data.get());
+                    return std::string(data.get());
+                }
+
                 void Frame::copyDataOut(void *data) {
+                    std::cout << "copy data, offset " << this->data_offset << ", length:" << data_len << std::endl;
                     this->buffer_data.copyOut(this->data_offset, data_len, data);
                 }
             }
