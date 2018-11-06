@@ -38,6 +38,11 @@ namespace Envoy {
                             if (frame.getFrameType() == static_cast<byte>(0x04)) {
                                 this->stats_.frame_0x04_request_qps_.recordValue(1);
                             }
+                            if (frame.getDataLength() > 0) {
+                                std::cout << "Data Length: " << frame.getDataLength() << std::endl;
+                                std::cout << "Data: " << frame.getDataUtf8() << std::endl;
+                            }
+
                         }
                     }
                     // inject cluster name for next filter
