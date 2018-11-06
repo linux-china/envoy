@@ -5,7 +5,7 @@ namespace Envoy {
     namespace Extensions {
         namespace NetworkFilters {
             namespace RSocket {
-                Frame::Frame(Buffer::Instance &data) {
+                Frame::Frame(Buffer::Instance &data): buffer_data(data) {
                     int raw_data_len = data.length();
                     // frame length, first 3 bytes
                     byte frame_len_array[3];
@@ -46,6 +46,14 @@ namespace Envoy {
                         }
 
                     }
+                }
+
+                void Frame::copyMetadataOut(void *data) {
+                    this->buffer_data.copyOut(this->metadata_offset, metadata_len, data);
+                }
+
+                void Frame::copyDataOut(void *data) {
+                    this->buffer_data.copyOut(this->data_offset, data_len, data);
                 }
             }
         }
