@@ -12,12 +12,15 @@ message RSocketProxy {
     string stat_prefix = 1 [(validate.rules).string.min_bytes = 1];
 
     // Configure the protocol used.
-    enum ProtocolType {
-        protobuf = 0; // protobuf for server2server
-        json = 1; // json for browser2server
+    enum PayloadMetadataType {
+        auto = 0; // auto detect
+        protobuf = 1; // protobuf for server2server
+        json = 2; // json for browser2server
+        string = 3; //string
+        bytes = 4; //binary array
     }
 
-    ProtocolType protocol_type = 2 [(validate.rules).enum.defined_only = true];
+    PayloadMetadataType metadata_type = 0 [(validate.rules).enum.defined_only = true];
 }
 
 /*
