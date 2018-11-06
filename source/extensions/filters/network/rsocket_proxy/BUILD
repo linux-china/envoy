@@ -13,7 +13,7 @@ envoy_package()
 
 envoy_cc_library(
     name = "rsocket",
-    srcs = ["frame.cpp","payload.cpp","rsocket.cc"],
+    srcs = ["frame.cc","payload.cc","rsocket.cc"],
     hdrs = ["frame.h","payload.h","rsocket.h"],
     deps = [
         "//include/envoy/buffer:buffer_interface",
