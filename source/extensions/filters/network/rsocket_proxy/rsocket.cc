@@ -25,7 +25,11 @@ namespace Envoy {
                         std::cout << "FrameLength:" << frame.getFrameLength() << std::endl;
                         std::cout << "MetadataPresent:" << frame.isMetadataPresent() << std::endl;
                         if (frame.getFrameType() == static_cast<byte>(0x04)) {
-                            this->stats_.frame_0x04_request_qps_.recordValue(1);
+                            this->stats_.frame_0x04_request_count_.inc();
+                        }
+                        if (frame.getMetadataLength() > 0) {
+                            std::cout << "Metadata Length: " << frame.getMetadataLength() << std::endl;
+                            std::cout << "Metadata: " << frame.getMetadataUtf8() << std::endl;
                         }
                         if (frame.getDataLength() > 0) {
                             std::cout << "Data Length: " << frame.getDataLength() << std::endl;
@@ -41,6 +45,16 @@ namespace Envoy {
                 Network::FilterStatus RSocketFilter::onWrite(Buffer::Instance &data, bool) {
                     if (isRSocketData(data)) {
                         std::cout << "RSocket write back: " << data.length() << std::endl;
+                        Frame frame{data, this->metadata_type};
+                        std::cout << "Response type: " << static_cast<int>(frame.getFrameType()) << std::endl;
+                        if (frame.getFrameType() == static_cast<byte>(0x0A)) {
+                            std::cout << "Metrics: 0x0A" << std::endl;
+                            this->stats_.frame_0x0A_response_count_.inc();
+                        }
+                        if (frame.getDataLength() > 0) {
+                            std::cout << "Response Data Length: " << frame.getDataLength() << std::endl;
+                            std::cout << "Response Data: " << frame.getDataUtf8() << std::endl;
+                        }
                     }
                     return Network::FilterStatus::Continue;
                 }

@@ -19,12 +19,12 @@ namespace Envoy {
                   COUNTER    (request_counter) \
                   COUNTER    (frame_0x0B_counter) \
                   GAUGE      (upstream_connection_count) \
-                  HISTOGRAM  (frame_0x04_request_qps) \
-                  HISTOGRAM  (frame_0x04_response_qps) \
-                  HISTOGRAM  (frame_0x05_request_qps) \
-                  HISTOGRAM  (frame_0x06_request_qps) \
-                  HISTOGRAM  (frame_0x06_response_qps) \
-                  HISTOGRAM  (frame_0x0A_response_qps)
+                  COUNTER    (frame_0x04_request_count) \
+                  COUNTER    (frame_0x04_response_count) \
+                  COUNTER    (frame_0x05_request_count) \
+                  COUNTER    (frame_0x06_request_count) \
+                  COUNTER    (frame_0x06_response_count) \
+                  COUNTER    (frame_0x0A_response_count)
                 // clang-format on
 
                 /**
