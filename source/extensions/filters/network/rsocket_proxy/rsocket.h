@@ -36,8 +36,8 @@ namespace Envoy {
                  */
                 class RSocketFilter : public Network::Filter, Logger::Loggable<Logger::Id::filter> {
                 public:
-                    RSocketFilter(const std::string &stat_prefix, Stats::Scope &scope) : stats_(
-                            generateStats(stat_prefix, scope)) {}
+                    RSocketFilter(const std::string &stat_prefix, const std::string metadata_type, Stats::Scope &scope)
+                            : stats_(generateStats(stat_prefix, scope)), metadata_type(metadata_type) {}
 
                     // Network::ReadFilter
                     Network::FilterStatus onData(Buffer::Instance &data, bool end_stream) override;
@@ -54,6 +54,7 @@ namespace Envoy {
                 private:
                     Network::ReadFilterCallbacks *read_callbacks_{};
                     RSocketStats stats_;
+                    std::string metadata_type;
 
                     RSocketStats generateStats(const std::string &prefix, Stats::Scope &scope) {
                         return RSocketStats{ALL_RSOCKET_STATS(POOL_COUNTER_PREFIX(scope, prefix),
