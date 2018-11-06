@@ -20,13 +20,12 @@ namespace Envoy {
                 Network::FilterFactoryCb RSocketConfigFactory::createFilterFactoryFromProtoTyped(
                         const RSocketProxy &proto_config,
                         Server::Configuration::FactoryContext &context) {
-
                     const std::string stat_prefix = fmt::format("rsocket.{}.", proto_config.stat_prefix());
-                    //todo factory context to add config for filter
-                    Stats::Scope &scope_ = context.scope();
-                    const std::string &prefix = proto_config.stat_prefix();
-                    return [&](Network::FilterManager &filter_manager) -> void {
-                        filter_manager.addFilter(std::make_shared<RSocketFilter>(prefix, scope_));
+                    const std::string metadata_type = proto_config.metadata_type();
+                    return [stat_prefix, metadata_type, &context](Network::FilterManager &filter_manager) -> void {
+                        filter_manager.addFilter(
+                                std::make_shared<RSocketFilter>(stat_prefix, metadata_type, context.scope())
+                        );
                     };
                 }
 
