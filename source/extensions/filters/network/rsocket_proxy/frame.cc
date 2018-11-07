@@ -28,12 +28,16 @@ namespace Envoy {
                     this->flags = (static_cast<int>(frame_extra_array[0] & static_cast<byte>(3)) << 8)
                                   | (static_cast<int>( frame_extra_array[2]));
                     this->metadata_present = (frame_extra_array[0] & static_cast<byte>(1)) == 1;
-                    //if metadata present
+                    //if metadata present, from 9
                     if (this->metadata_present && raw_data_len >= 12) {
                         ////REQUEST_RESPONSE, REQUEST_FNF (Fire-n-Forget), REQUEST_STREAM
                         if (this->getFrameType() == static_cast<byte>(0x04)
                             || this->getFrameType() == static_cast<byte>(0x05)
-                            || this->getFrameType() == static_cast<byte>(0x06)) {
+                            || this->getFrameType() == static_cast<byte>(0x06)
+                            || this->getFrameType() == static_cast<byte>(0x0A)
+                            || this->getFrameType() == static_cast<byte>(0x0B)
+                            || this->getFrameType() == static_cast<byte>(0x0C)
+                                ) {
                             //metadata
                             byte metadata_len_array[3];
                             data.copyOut(9, 3, metadata_len_array);
@@ -41,14 +45,17 @@ namespace Envoy {
                             this->metadata_len = (static_cast<int>( metadata_len_array[0]) << 16)
                                                  | (static_cast<int>( metadata_len_array[1]) << 8)
                                                  | (static_cast<int>( metadata_len_array[2]));
-                            std::cout << "Metadata Offset: " << metadata_offset << std::endl;
-                            std::cout << "Metadata Length: " << metadata_len << std::endl;
-                            this->data_offset = metadata_offset + metadata_len;
-                            this->data_len = raw_data_len - this->data_offset;
-                            std::cout << "Data offset: " << this->data_offset << std::endl;
-                            std::cout << "Data length: " << this->data_len << std::endl;
                         }
-
+                    }
+                    // frame data
+                    if (metadata_offset > 0) {
+                        this->data_offset = metadata_offset + metadata_len;
+                        this->data_len = raw_data_len - this->data_offset;
+                    } else {
+                        if (raw_data_len > 9) {
+                            this->data_offset = 9;
+                            this->data_len = raw_data_len - this->data_offset;
+                        }
                     }
                 }
 
@@ -75,7 +82,6 @@ namespace Envoy {
                 }
 
                 void Frame::copyDataOut(void *data) {
-                    std::cout << "copy data, offset " << this->data_offset << ", length:" << data_len << std::endl;
                     this->buffer_data.copyOut(this->data_offset, data_len, data);
                 }
             }
