@@ -4,6 +4,7 @@
 #include "extensions/filters/network/rsocket_proxy/payload.h"
 
 #include <iostream>
+#include "common/common/logger.h"
 
 typedef unsigned char byte;
 
@@ -36,6 +37,21 @@ namespace Envoy {
                     std::string getDataUtf8();
 
                     byte getFrameType() { return this->frame_type; }
+
+                    std::string toString() {
+                        return fmt::format(
+                                "frame_len:{},stream_id:{},frame_type:{},metadata_present:{},metadata_offset:{},metadata_len:{},data_offset:{},data_len:{}",
+                                this->frame_len,
+                                this->stream_id,
+                                static_cast<int>(this->frame_type),
+                                this->metadata_present,
+                                this->metadata_offset,
+                                this->metadata_len,
+                                this->data_offset,
+                                this->data_len
+                        );
+
+                    }
 
                 private:
                     Buffer::Instance &buffer_data;
