@@ -22,9 +22,9 @@ namespace Envoy {
                     if (isRSocketData(data)) {
                         Frame frame{data, this->metadata_type};
                         std::cout << "==================request start===============" << std::endl;
-                        if (frame.getFrameType() == static_cast<byte>(0x04)) {
-                            this->stats_.frame_0x04_request_count_.inc();
-                        }
+                        std::string metric_name = fmt::format("rsocket_type_{}_counter",
+                                                              static_cast<int>(frame.getFrameType()));
+                        this->scope.counter(metric_name).inc();
                         std::cout << frame.toString() << std::endl;
                         this->stats_.request_counter_.inc();
                         std::cout << "==================request end===============" << std::endl;
@@ -38,14 +38,10 @@ namespace Envoy {
                     if (isRSocketData(data)) {
                         std::cout << "==================response start===============" << std::endl;
                         Frame frame{data, this->metadata_type};
+                        std::string metric_name = fmt::format("rsocket_type_{}_counter",
+                                                              static_cast<int>(frame.getFrameType()));
+                        this->scope.counter(metric_name).inc();
                         std::cout << frame.toString() << std::endl;
-                        if (frame.getFrameType() == static_cast<byte>(0x0A)) {
-                            this->stats_.frame_0x0A_response_count_.inc();
-                            if (frame.getDataLength() > 0) {
-                                std::string dataUtf8 = frame.getDataUtf8();
-                                std::cout << "response data:" << dataUtf8 << std::endl;
-                            }
-                        }
                         std::cout << "==================response end===============" << std::endl;
                     }
                     return Network::FilterStatus::Continue;
