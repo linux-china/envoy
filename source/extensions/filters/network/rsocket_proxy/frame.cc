@@ -36,8 +36,7 @@ namespace Envoy {
                             || this->getFrameType() == static_cast<byte>(0x06)
                             || this->getFrameType() == static_cast<byte>(0x0A)
                             || this->getFrameType() == static_cast<byte>(0x0B)
-                            || this->getFrameType() == static_cast<byte>(0x0C)
-                                ) {
+                            || this->getFrameType() == static_cast<byte>(0x0C)) {
                             //metadata
                             byte metadata_len_array[3];
                             data.copyOut(9, 3, metadata_len_array);
