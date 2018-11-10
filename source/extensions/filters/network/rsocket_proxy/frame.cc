@@ -44,6 +44,12 @@ namespace Envoy {
                             this->metadata_len = (static_cast<int>( metadata_len_array[0]) << 16)
                                                  | (static_cast<int>( metadata_len_array[1]) << 8)
                                                  | (static_cast<int>( metadata_len_array[2]));
+                            if (this->metadata_len > 0) {
+                                //todo read first by of metadata and check metdata content type
+                                byte metadata_first_byte[1];
+                                this->buffer_data.copyOut(this->metadata_offset, metadata_first_byte, 1);
+                                //todo check first byte of metadata
+                            }
                         }
                     }
                     // frame data
