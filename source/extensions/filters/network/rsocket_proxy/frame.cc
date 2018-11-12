@@ -47,7 +47,7 @@ namespace Envoy {
                             if (this->metadata_len > 0) {
                                 //todo read first by of metadata and check metdata content type
                                 byte metadata_first_byte[1];
-                                this->buffer_data.copyOut(this->metadata_offset, metadata_first_byte, 1);
+                                this->buffer_data.copyOut(this->metadata_offset, 1, metadata_first_byte);
                                 //todo check first byte of metadata
                             }
                         }
