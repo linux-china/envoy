@@ -14,19 +14,19 @@ namespace Envoy {
             namespace RSocket {
                 class Frame : public Payload {
                 public:
-                    Frame(Buffer::Instance &data, const std::string metadata_type);
+                    Frame(Buffer::Instance &data, const std::string metadata_type_);
 
-                    bool isMetadataPresent() { return this->metadata_present; }
+                    bool isMetadataPresent() { return this->metadata_present_; }
 
-                    int getFrameLength() { return this->frame_len; }
+                    int getFrameLength() { return this->frame_len_; }
 
-                    int getMetadataLength() { return this->metadata_len; }
+                    int getMetadataLength() { return this->metadata_len_; }
 
-                    int getDataLength() { return this->data_len; }
+                    int getDataLength() { return this->data_len_; }
 
-                    int getStreamId() { return this->stream_id; }
+                    int getStreamId() { return this->stream_id_; }
 
-                    bool hasMetadata() { return this->metadata_present; }
+                    bool hasMetadata() { return this->metadata_present_; }
 
                     void copyMetadataOut(void *data);
 
@@ -36,35 +36,35 @@ namespace Envoy {
 
                     std::string getDataUtf8();
 
-                    byte getFrameType() { return this->frame_type; }
+                    byte getFrameType() { return this->frame_type_; }
 
                     std::string toString() {
                         return fmt::format(
                                 "frame_len:{},stream_id:{},frame_type:{},metadata_present:{},metadata_offset:{},metadata_len:{},data_offset:{},data_len:{}",
-                                this->frame_len,
-                                this->stream_id,
-                                static_cast<int>(this->frame_type),
-                                this->metadata_present,
-                                this->metadata_offset,
-                                this->metadata_len,
-                                this->data_offset,
-                                this->data_len
+                                this->frame_len_,
+                                this->stream_id_,
+                                static_cast<int>(this->frame_type_),
+                                this->metadata_present_,
+                                this->metadata_offset_,
+                                this->metadata_len_,
+                                this->data_offset_,
+                                this->data_len_
                         );
 
                     }
 
                 private:
-                    Buffer::Instance &buffer_data;
-                    std::string metadata_type;
-                    int frame_len;
-                    int stream_id;
-                    byte frame_type;
-                    bool metadata_present;
-                    int flags;
-                    int metadata_offset{-1};
-                    int metadata_len{0};
-                    int data_offset{-1};
-                    int data_len{0};
+                    Buffer::Instance &buffer_data_;
+                    std::string metadata_type_;
+                    int frame_len_;
+                    int stream_id_;
+                    byte frame_type_;
+                    bool metadata_present_;
+                    int flags_;
+                    int metadata_offset_{-1};
+                    int metadata_len_{0};
+                    int data_offset_{-1};
+                    int data_len_{0};
                 };
             }
         }
