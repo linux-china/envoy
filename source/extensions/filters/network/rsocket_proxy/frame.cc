@@ -24,19 +24,19 @@ namespace Envoy {
                     //frame type(6 bits) && flags(10 bits)
                     byte frame_extra_array[2];
                     data.copyOut(7, 2, frame_extra_array);
-                    this->frame_type_ = frame_extra_array[0] >> 2;
+                    this->frame_type_ = static_cast<FrameType>(frame_extra_array[0] >> 2);
                     this->flags_ = (static_cast<int>(frame_extra_array[0] & static_cast<byte>(3)) << 8)
                                    | (static_cast<int>( frame_extra_array[2]));
                     this->metadata_present_ = (frame_extra_array[0] & static_cast<byte>(1)) == 1;
                     //if metadata present, from 9
                     if (this->metadata_present_ && raw_data_len >= 12) {
                         ////REQUEST_RESPONSE, REQUEST_FNF (Fire-n-Forget), REQUEST_STREAM
-                        if (this->getFrameType() == static_cast<byte>(0x04)
-                            || this->getFrameType() == static_cast<byte>(0x05)
-                            || this->getFrameType() == static_cast<byte>(0x06)
-                            || this->getFrameType() == static_cast<byte>(0x0A)
-                            || this->getFrameType() == static_cast<byte>(0x0B)
-                            || this->getFrameType() == static_cast<byte>(0x0C)) {
+                        if (this->getFrameType() == FrameType::REQUEST_RESPONSE
+                            || this->getFrameType() == FrameType::REQUEST_FNF
+                            || this->getFrameType() == FrameType::REQUEST_STREAM
+                            || this->getFrameType() == FrameType::PAYLOAD
+                            || this->getFrameType() == FrameType::ERROR
+                            || this->getFrameType() == FrameType::METADATA_PUSH) {
                             //metadata
                             byte metadata_len_array[3];
                             data.copyOut(9, 3, metadata_len_array);
