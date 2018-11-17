@@ -1,7 +1,8 @@
 #pragma once
 
-#include "envoy/buffer/buffer.h"
 #include <string>
+
+#include "envoy/buffer/buffer.h"
 
 namespace Envoy {
     namespace Extensions {

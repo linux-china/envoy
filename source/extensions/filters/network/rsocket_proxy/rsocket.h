@@ -1,9 +1,7 @@
 #pragma once
 
 #include "envoy/network/filter.h"
-
 #include "common/common/logger.h"
-
 #include "envoy/stats/scope.h"
 
 namespace Envoy {

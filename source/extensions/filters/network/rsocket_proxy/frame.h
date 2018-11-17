@@ -1,10 +1,11 @@
 #pragma once
 
-#include "envoy/buffer/buffer.h"
-#include "extensions/filters/network/rsocket_proxy/payload.h"
-
 #include <iostream>
+
+#include "envoy/buffer/buffer.h"
 #include "common/common/logger.h"
+
+#include "extensions/filters/network/rsocket_proxy/payload.h"
 
 typedef unsigned char byte;
 
