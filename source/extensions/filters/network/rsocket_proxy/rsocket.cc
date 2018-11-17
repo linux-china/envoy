@@ -21,6 +21,10 @@ namespace Envoy {
                     ENVOY_CONN_LOG(trace, "tap: got {} bytes", read_callbacks_->connection(), data.length());
                     if (isRSocketData(data)) {
                         Frame frame{data, this->metadata_type_};
+                        //setup frame
+                        if (frame.getFrameType() == FrameType::SETUP) {
+                            //todo save setup frame information in filter
+                        }
                         std::cout << "==================request start===============" << std::endl;
                         std::string metric_name = fmt::format("rsocket_type_{}_counter",
                                                               static_cast<int>(frame.getFrameType()));
