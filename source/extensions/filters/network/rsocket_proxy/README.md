@@ -8,8 +8,8 @@ RSocket Proxy for Envoy
 
 ### Ports
 
-* Ingress port: 42253, route to 127.0.0.1
-* Egress port: 43128, route to upstream RSocket service. The application uses this port on 127.0.0.1 to send RSocket call.
+* Ingress port: 42253, route to 42252 port on 127.0.0.1
+* Egress port: 43128, route to upstream RSocket services(192.168.1.X:42253). The application uses this port on 127.0.0.1 to send RSocket call.
 
 ### Dynamic clusters
 
